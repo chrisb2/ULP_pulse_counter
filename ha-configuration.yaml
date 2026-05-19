@@ -1,0 +1,33 @@
+mqtt:
+  sensor:
+    - name: "power-total"
+      state_topic: "home/power/count"
+      unit_of_measurement: "EdgeCount"
+      force_update: true
+    - name: "power-rate"
+      state_topic: "home/power/rate"
+      unit_of_measurement: "EdgeCount/sec"
+      force_update: true
+    - name: "power-batt"
+      state_topic: "home/power/voltage"
+      unit_of_measurement: "V"
+      force_update: true
+    - name: "power-signal"
+      state_topic: "home/power/signal"
+      unit_of_measurement: "dB"
+      force_update: true
+
+template:
+  - trigger:
+      - platform: state
+        entity_id: sensor.power_total
+      - platform: state
+        entity_id: sensor.power_rate
+    sensor:
+      - name: "Energy"
+        unit_of_measurement: "kWh"
+        state: "{{ '%.2f' | format(states('sensor.power_total') | float / 2000 ) }}"
+      - name: "Power"
+        unit_of_measurement: "kW"
+        state: "{{ '%.2f' | format( states('sensor.power_rate') | float / 2000 * 3600 ) }}"
+        

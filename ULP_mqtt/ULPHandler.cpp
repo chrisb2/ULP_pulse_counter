@@ -15,8 +15,8 @@
 #include "Configuration.h"
 
 
-//#include "esp32s3/ulp.h"
-#include "esp32/ulp.h"
+#include "esp32s3/ulp.h"
+//#include "esp32/ulp.h"
 //esp32, esp32s2, esp32s3 have the ULP library, esp32c6 doesn't seem to have the ULP libary
 #include "driver/rtc_io.h"
 #include "soc/rtc_io_reg.h"
@@ -160,6 +160,7 @@ void ULPHandler::enter_deep_sleep() {
   delay(10);
   Serial.print("Sleeping for ");
   Serial.println(ULP_SLEEP_TIME);
+  Serial.flush();
 
   esp_sleep_enable_timer_wakeup(ULP_SLEEP_TIME * 1000000);  // Wake up every SLEEP_TIME seconds
   esp_deep_sleep_start();  // Enter deep sleep
