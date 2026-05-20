@@ -11,10 +11,10 @@ bool WiFiHandler::setupWiFi() {
   delay(10);
 
   // Connect to Wi-Fi
-  Serial.println();
-  Serial.print("Connecting to WiFi: ");
-  Serial.print(WIFI_SSID);
-  Serial.print("  ");
+  Serial.printf("\nConnecting to WiFi: %s\n", WIFI_SSID);
+
+  IPAddress ip(192,168,1,14), gw(192,168,1,1), sn(255,255,255,0), dns(8,8,8,8);
+  WiFi.config(ip, gw, sn, dns);
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   WiFi.setTxPower(WIFI_POWER_15dBm);
@@ -23,9 +23,8 @@ bool WiFiHandler::setupWiFi() {
     yield();
   }
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.print("Connected to WiFi: ");
-    Serial.println(WiFi.localIP());
-    Serial.printf("WiFi Connect in %lu ms\n", millis() - start);
+    Serial.printf("WiFi connect (%s, %s) in %lu ms\n", 
+      WiFi.localIP().toString().c_str(), WiFi.macAddress().c_str(), millis() - start);
     return true;
   }
   else {
