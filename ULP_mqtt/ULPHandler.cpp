@@ -8,12 +8,9 @@
 //    getting the count rate.
 //    using different versions of esp than esp32s3
 
-
-
 // ULPHandler.cpp
 #include "ULPHandler.h"
 #include "Configuration.h"
-
 
 #include "esp32s3/ulp.h"
 //#include "esp32/ulp.h"
@@ -78,7 +75,6 @@ const ulp_insn_t ulp_program[] = {
 
 
 void ULPHandler::setupULP() {
-
   Serial.println("Initialising ULP program.");
   
   memset(RTC_SLOW_MEM, 0, CONFIG_ULP_COPROC_RESERVE_MEM);  // set to zeros, optional
@@ -156,8 +152,6 @@ float ULPHandler::getRate() {
 
 
 void ULPHandler::enter_deep_sleep() {
-
-  delay(10);
   Serial.print("Sleeping for ");
   Serial.println(ULP_SLEEP_TIME);
   Serial.flush();

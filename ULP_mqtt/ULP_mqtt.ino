@@ -6,11 +6,12 @@
 #include <Configuration.h>
 
 void setup() {
-    
     pinMode(BATTERY_PIN, INPUT);
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, HIGH);  // turn on during init
     Serial.begin(115200);
+
+    delay(5000);  // TODO - remove
 
     // Load configuration
     loadConfiguration();
@@ -33,15 +34,11 @@ void setup() {
       ULPHandler::enter_deep_sleep();
     }
 
-    delay(100);
-    
-    if (WiFiHandler::setupMQTT() == false) {
-      Serial.println("Couldn't connect to wifi - sleeping");
+     if (WiFiHandler::setupMQTT() == false) {
+      Serial.println("Couldn't connect to MQTT - sleeping");
       ULPHandler::enter_deep_sleep();
     }
 
-    delay(100);
-    
     WiFiHandler::sendData(count, rate);
 
     WiFiHandler::disconnectMQTT();

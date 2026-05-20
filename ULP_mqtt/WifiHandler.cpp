@@ -48,6 +48,7 @@ bool WiFiHandler::setupMQTT() {
       return true;
     } else {
       Serial.printf("Failed, rc=%i\n", mqttClient.state());
+      mqttClient.loop();
     }
   }
   return false;   
@@ -59,7 +60,6 @@ float readBatteryVoltage() {
     float voltage = (rawADC / float(ADC_RESOLUTION)) * REF_VOLTAGE * VOLTAGE_DIVIDER;
     return voltage;
 }
-
 
 void WiFiHandler::sendData(uint32_t count, float rate) {
   char countTopic[50], rateTopic[50], signalTopic[50], voltageTopic[50];
@@ -94,9 +94,7 @@ void WiFiHandler::sendData(uint32_t count, float rate) {
 void WiFiHandler::disconnectMQTT() {
   mqttClient.loop();
   mqttClient.disconnect();
-  delay(100);
   mqttClient.loop();
-  delay(100);
 }
 
 void WiFiHandler::disconnectWiFi() {
