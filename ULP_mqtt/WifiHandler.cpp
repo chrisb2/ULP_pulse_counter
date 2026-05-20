@@ -7,31 +7,31 @@ WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
 bool WiFiHandler::setupWiFi() {
-  
+  long start = millis();
   delay(10);
 
   // Connect to Wi-Fi
   Serial.println();
   Serial.print("Connecting to WiFi: ");
   Serial.print(WIFI_SSID);
-  Serial.print("...");
+  Serial.print("  ");
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   WiFi.setTxPower(WIFI_POWER_15dBm);
-  int i = 0;
-  while (WiFi.status() != WL_CONNECTED && i < 50) {
-    delay(1000);
-    Serial.print(".");
-    i++;
+
+  while (WiFi.status() != WL_CONNECTED && (millis() - start) < 10000) {
+    yield();
   }
   if (WiFi.status() == WL_CONNECTED) {
     Serial.print("Connected to WiFi: ");
     Serial.println(WiFi.localIP());
+    Serial.printf("WiFi Connect in %lu ms\n", millis() - start);
     return true;
   }
   else {
     return false;
   }
-    
+  
     
 }
 
