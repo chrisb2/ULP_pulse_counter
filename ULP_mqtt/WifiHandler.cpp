@@ -8,7 +8,6 @@ PubSubClient mqttClient(wifiClient);
 
 bool WiFiHandler::setupWiFi() {
   long start = millis();
-  delay(10);
 
   // Connect to Wi-Fi
   Serial.printf("\nConnecting to WiFi: %s\n", WIFI_SSID);
@@ -35,35 +34,28 @@ bool WiFiHandler::setupWiFi() {
 }
 
 bool WiFiHandler::setupMQTT() {  
+  long start = millis();
+
   // Set MQTT server
   mqttClient.setServer(MQTT_SERVER, MQTT_PORT);
   // Loop until we're reconnected
-  int i = 0;
-  while (!mqttClient.connected() && i < 10) {
+  while (!mqttClient.connected() && (millis() - start) < 1000) {
     Serial.print("Attempting MQTT connection...");
     // Try to connect
     String deviceName = String(DEVICE_NAME) + String(random(1000, 9999));
     if (mqttClient.connect(deviceName.c_str(), MQTT_USER, MQTT_PASSWORD)) {
-    //if (mqttClient.connect(DEVICE_NAME, MQTT_USER, MQTT_PASSWORD)) {
-    //if (client.connect("ESP32Client", mqtt_user, mqtt_password, "homeassistant/status", 0, true, "offline")) {
-      Serial.println("Connected to MQTT broker");
+      Serial.printf("MQTT connect in %lu ms\n", millis() - start);
       return true;
     } else {
-      Serial.print("Failed, rc=");
-      Serial.print(mqttClient.state());
-      mqttClient.loop();
-      Serial.println(" trying again in 5 seconds");
-      delay(5000);
-      i++;
+      Serial.printf("Failed, rc=%i\n", mqttClient.state());
     }
   }
-  return false;
-    
+  return false;   
 }
 
 float readBatteryVoltage() {
     int rawADC = analogRead(BATTERY_PIN);
-    Serial.println(rawADC);
+    Serial.printf("RAW battery ADC: %i\n", rawADC);
     float voltage = (rawADC / float(ADC_RESOLUTION)) * REF_VOLTAGE * VOLTAGE_DIVIDER;
     return voltage;
 }
