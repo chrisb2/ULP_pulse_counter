@@ -95,6 +95,7 @@ void WiFiHandler::disconnectMQTT() {
   mqttClient.loop();
   mqttClient.disconnect();
   mqttClient.loop();
+  delay(100); // Needed for MQTT data transmission to occur
 }
 
 void WiFiHandler::disconnectWiFi() {
