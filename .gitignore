@@ -1,2 +1,6 @@
 ULP_mqtt/Secrets.h
 *.jpeg
+
+hardware/**/*.zip
+*.lck
+hardware/#auto_saved_files#
