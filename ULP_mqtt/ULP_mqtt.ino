@@ -11,7 +11,7 @@ void setup() {
     digitalWrite(LED_PIN, HIGH);  // turn on during init
     Serial.begin(115200);
 
-    delay(5000);  // TODO - remove
+    // delay(5000);  // TODO - remove
 
     // Load configuration
     loadConfiguration();
