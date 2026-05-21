@@ -8,6 +8,7 @@
 void setup() {
     pinMode(BATTERY_PIN, INPUT);
     pinMode(LED_PIN, OUTPUT);
+    pinMode(NO_SLEEP_PIN, INPUT_PULLUP);
     digitalWrite(LED_PIN, HIGH);  // turn on during init
     Serial.begin(115200);
 
@@ -44,9 +45,12 @@ void setup() {
     WiFiHandler::disconnectMQTT();
     WiFiHandler::disconnectWiFi();
 
-    // Enter deep sleep
-    digitalWrite(LED_PIN, LOW);  // turn off during sleep
-    ULPHandler::enter_deep_sleep();
+    // Prevent sleeping so new firmware can be flashed
+    if (digitalRead(NO_SLEEP_PIN) == HIGH) {
+        // Enter deep sleep
+        digitalWrite(LED_PIN, LOW);  // turn off during sleep
+        ULPHandler::enter_deep_sleep();
+    }
 }
 
 void loop() {

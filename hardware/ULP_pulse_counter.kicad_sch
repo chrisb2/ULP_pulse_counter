@@ -3117,8 +3117,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
-		(at 31.75 27.94 0)
+		(lib_id "power:GND")
+		(at 31.75 27.94 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3127,9 +3127,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "9481492c-b3be-42b9-9de9-b8d6623abfb1")
-		(property "Reference" "#PWR07"
-			(at 31.75 31.75 0)
+		(uuid "9d99320c-90bc-43b5-b140-ce49298f974a")
+		(property "Reference" "#PWR010"
+			(at 31.75 21.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3139,7 +3139,7 @@
 				)
 			)
 		)
-		(property "Value" "VCC"
+		(property "Value" "GND"
 			(at 31.75 22.86 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3171,7 +3171,7 @@
 				)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 31.75 27.94 0)
 			(hide yes)
 			(show_name no)
@@ -3183,12 +3183,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "990affc2-6f4a-4027-802b-cacc57c2699f")
+			(uuid "4a974318-f65f-4bce-b658-e0c19894439a")
 		)
 		(instances
 			(project "ULP_pulse_counter"
 				(path "/fd3a7091-f2a1-4e79-97b9-ae2af4bd78a2"
-					(reference "#PWR07")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
