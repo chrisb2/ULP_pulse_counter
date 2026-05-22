@@ -56,7 +56,7 @@ This project implements a low-power ESP32S3-based power monitoring system that u
    - Added functionality to track total count, and to determine the pulse rate.
 
 2. **WiFi and MQTT**:
-   - Uses the [Nick O'Leary MQTT library](https://pubsubclient.knolleary.net/).
+   - Uses the [Async MQTT client](https://github.com/marvinroger/async-mqtt-client).
    - Sends data to `home/power/count`, `home/power/rate`, `home/power/voltage` and `home/power/signal` topics.
 
 ---

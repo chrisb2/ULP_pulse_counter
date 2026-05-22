@@ -3,5 +3,5 @@
 
 void loadConfiguration() {
     // Load configuration from non-volatile storage or define defaults
-    Serial.println("Configuration loaded.");
+    Serial.println("\nConfiguration loaded.");
 }

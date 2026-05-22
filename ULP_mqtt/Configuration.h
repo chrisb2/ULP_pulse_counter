@@ -18,7 +18,7 @@
 #define LED_PIN 21
 #define BATTERY_PIN 1        // ADC pin for battery voltage (use ADC1 pins 32-29 as wifi can interfere with ADC2 pins)
 #define NO_SLEEP_PIN 2
-#define VOLTAGE_DIVIDER 2.31   // Voltage divider ratio (R1 + R2) / R2  - should be 2.0 - however may be some issue with the voltage reg etc
+#define VOLTAGE_DIVIDER 1.36
 #define ADC_RESOLUTION 4095   // 12-bit ADC resolution
 #define REF_VOLTAGE 3.3       // Reference voltage of ESP32 ADC
 

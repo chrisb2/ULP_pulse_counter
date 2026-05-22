@@ -2,7 +2,8 @@
 #ifndef WIFIHANDLER_H
 #define WIFIHANDLER_H
 #include <WiFi.h>
-#include <PubSubClient.h>   //Nick O'Leary
+#include <AsyncMqttClient.h>
+#include <set>
 
 #include <Arduino.h> //for serial
 
