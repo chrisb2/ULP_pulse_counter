@@ -21,8 +21,6 @@ static void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
 
 static void onMqttPublish(uint16_t packetId) {
   pendingPacketIds.erase(packetId);
-  Serial.printf("ACK received for packetId: %u (%u remaining)\n", 
-    packetId, pendingPacketIds.size());
 }
 
 // ── WiFi ─────────────────────────────────────────────────────────────────────
@@ -94,13 +92,14 @@ void WiFiHandler::disconnectMQTT() {
   }
 
   if (!pendingPacketIds.empty()) {
-    Serial.printf("Disconnecting with %u unacknowledged packets\n", 
-      pendingPacketIds.size());
+    Serial.printf("Disconnecting with %u unacknowledged packets\n", pendingPacketIds.size());
+  } else {
+    Serial.printf("Disconnecting, all packets acknowledged in %dms\n", (millis() - start));
   }
 
   mqttClient.disconnect();
   // Allow disconnect to propagate before sleeping/cutting power
-  while (mqttConnected && (millis() - start) < 500) {
+  while (mqttConnected && (millis() - start) < 1000) {
     yield();
   }
   Serial.printf("MQTT disconnected in %dms: %d\n", (millis() - start), !mqttConnected);
@@ -123,22 +122,23 @@ static void publish(const char *topic, const char *payload) {
 }
 
 // ── Data sending ──────────────────────────────────────────────────────────────
-
 void WiFiHandler::sendData(uint32_t count, float rate) {
-  char countTopic[50], rateTopic[50], signalTopic[50], voltageTopic[50];
-  snprintf(countTopic,   sizeof(countTopic),   "%s/%s/count",   TOPIC_PREFIX, DEVICE_NAME);
-  snprintf(rateTopic,    sizeof(rateTopic),    "%s/%s/rate",    TOPIC_PREFIX, DEVICE_NAME);
-  snprintf(signalTopic,  sizeof(signalTopic),  "%s/%s/signal",  TOPIC_PREFIX, DEVICE_NAME);
-  snprintf(voltageTopic, sizeof(voltageTopic), "%s/%s/voltage", TOPIC_PREFIX, DEVICE_NAME);
-
+  JsonDocument doc;
+  char topic[50];
+  snprintf(topic,   sizeof(topic), "%s/%s/sensors", TOPIC_PREFIX, DEVICE_NAME);
   int32_t signalStrength = WiFi.RSSI();
   float batteryVoltage = readBatteryVoltage();
 
-  publish(countTopic,   String(count).c_str());
-  publish(rateTopic,    String(rate).c_str());
-  publish(signalTopic,  String(signalStrength).c_str());
-  publish(voltageTopic, String(batteryVoltage).c_str());
+  doc["count"] = String(count);
+  doc["rate"] = String(rate);
+  doc["signal"] = String(signalStrength);
+  doc["voltage"] = String(batteryVoltage);
 
+  // Serialise to a char buffer
+  char payload[128];
+  serializeJson(doc, payload);
+
+  publish(topic, payload);
   Serial.printf("Data sent: count=%u, rate=%.2f, signal=%d dBm, voltage=%.2f V\n",
     count, rate, signalStrength, batteryVoltage);
 }

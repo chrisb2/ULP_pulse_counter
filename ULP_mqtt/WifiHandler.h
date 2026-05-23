@@ -3,6 +3,7 @@
 #define WIFIHANDLER_H
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
+#include <ArduinoJson.h>
 #include <set>
 
 #include <Arduino.h> //for serial

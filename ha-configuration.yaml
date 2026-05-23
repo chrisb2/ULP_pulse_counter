@@ -2,23 +2,27 @@ mqtt:
   sensor:
     - name: "power-total"
       unique_id: "power_total"
-      state_topic: "home/power/count"
+      state_topic: "home/power/sensors"
       unit_of_measurement: "EdgeCount"
+      value_template: "{{ value_json.count }}"
       force_update: true
     - name: "power-rate"
       unique_id: "power_rate"
-      state_topic: "home/power/rate"
+      state_topic: "home/power/sensors"
       unit_of_measurement: "EdgeCount/sec"
+      value_template: "{{ value_json.rate }}"
       force_update: true
     - name: "power-batt"
       unique_id: "power_batt"
-      state_topic: "home/power/voltage"
+      state_topic: "home/power/sensors"
       unit_of_measurement: "V"
+      value_template: "{{ value_json.voltage }}"
       force_update: true
     - name: "power-signal"
       unique_id: "power_signal"
-      state_topic: "home/power/signal"
+      state_topic: "home/power/sensors"
       unit_of_measurement: "dB"
+      value_template: "{{ value_json.signal }}"
       force_update: true
 
 template:
@@ -36,4 +40,3 @@ template:
         unique_id: "power"
         unit_of_measurement: "kW"
         state: "{{ '%.2f' | format( states('sensor.power_rate') | float / 2000 * 3600 ) }}"
-        
