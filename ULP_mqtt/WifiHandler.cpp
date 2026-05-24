@@ -27,7 +27,6 @@ static void onMqttPublish(uint16_t packetId) {
 
 bool WiFiHandler::setupWiFi() {
   long start = millis();
-
   Serial.printf("Connecting to WiFi: %s\n", WIFI_SSID);
 
   IPAddress ip(192,168,1,14), gw(192,168,1,1), sn(255,255,255,0), dns(8,8,8,8);
@@ -41,7 +40,7 @@ bool WiFiHandler::setupWiFi() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.printf("WiFi connect (%s, %s) in %lu ms\n",
+    Serial.printf("WiFi connect (%s, %s) in %lums\n",
       WiFi.localIP().toString().c_str(), WiFi.macAddress().c_str(), millis() - start);
     return true;
   }
@@ -76,7 +75,7 @@ bool WiFiHandler::setupMQTT() {
   }
 
   if (mqttConnected) {
-    Serial.printf(" in %lu ms\n", millis() - start);
+    Serial.printf(" in %lums\n", millis() - start);
     return true;
   }
 
@@ -94,7 +93,7 @@ void WiFiHandler::disconnectMQTT() {
   if (!pendingPacketIds.empty()) {
     Serial.printf("Disconnecting with %u unacknowledged packets\n", pendingPacketIds.size());
   } else {
-    Serial.printf("Disconnecting, all packets acknowledged in %dms\n", (millis() - start));
+    Serial.printf("Disconnecting, all packets acknowledged in %lums\n", (millis() - start));
   }
 
   mqttClient.disconnect();
@@ -108,8 +107,12 @@ void WiFiHandler::disconnectMQTT() {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 static float readBatteryVoltage() {
-  int rawADC = analogRead(BATTERY_PIN);
-  return (rawADC / float(ADC_RESOLUTION)) * REF_VOLTAGE * VOLTAGE_DIVIDER;
+  long sum = 0;
+  for (int i = 0; i < 5; i++) {
+    sum += analogReadMilliVolts(BATTERY_PIN);
+  }
+  int mv = sum / 5;
+  return (mv * VOLTAGE_DIVIDER) / 1000.0f;
 }
 
 static void publish(const char *topic, const char *payload) {
@@ -139,6 +142,4 @@ void WiFiHandler::sendData(uint32_t count, float rate) {
   serializeJson(doc, payload);
 
   publish(topic, payload);
-  Serial.printf("Data sent: count=%u, rate=%.2f, signal=%d dBm, voltage=%.2f V\n",
-    count, rate, signalStrength, batteryVoltage);
 }

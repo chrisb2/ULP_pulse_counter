@@ -4,9 +4,8 @@
 
 #include "Secrets.h"
 
-#define TOPIC_PREFIX "home"
-
 // Power meter config
+#define TOPIC_PREFIX "home"
 #define DEVICE_NAME "power"
 #define ULP_SLEEP_TIME 15
 #define ULP_COUNT_PIN_PULLUP_EN false
@@ -21,6 +20,7 @@
 #define VOLTAGE_DIVIDER 1.36
 #define ADC_RESOLUTION 4095   // 12-bit ADC resolution
 #define REF_VOLTAGE 3.3       // Reference voltage of ESP32 ADC
+
 
 #include <Arduino.h> //for serial
 
