@@ -31,6 +31,7 @@ bool WiFiHandler::setupWiFi() {
 
   IPAddress ip(192,168,1,14), gw(192,168,1,1), sn(255,255,255,0), dns(8,8,8,8);
   WiFi.config(ip, gw, sn, dns);
+  WiFi.setHostname(HOST_NAME);
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   WiFi.setTxPower(WIFI_POWER_15dBm);

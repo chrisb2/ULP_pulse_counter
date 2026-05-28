@@ -37,6 +37,7 @@ void setup() {
 
      if (WiFiHandler::setupMQTT() == false) {
       Serial.println("Couldn't connect to MQTT - sleeping");
+      WiFiHandler::disconnectWiFi();
       ULPHandler::enter_deep_sleep();
     }
 
