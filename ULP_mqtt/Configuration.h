@@ -11,7 +11,7 @@
 #define ULP_COUNT_PIN_PULLUP_EN false
 
 #define GPIO_SENSOR_PIN GPIO_NUM_9  // GPIO pin connected to the sensor
-#define RTC_GPIO_INDEX 16            // attain dynamically with: rtc_io_number_get(GPIO_SENSOR_PIN)
+#define RTC_GPIO_INDEX 9           // attain dynamically with: rtc_io_number_get(GPIO_SENSOR_PIN)
 //https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html
 
 #define LED_PIN 21
